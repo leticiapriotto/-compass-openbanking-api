@@ -1,0 +1,271 @@
+swagger: '2.0'
+info:
+  description: Crud Example
+  version: '1.0'
+  title: MS-Product - Programa de Bolsa API Documentation
+  contact:
+    name: Wellington Aires Alves
+    email: walves@uolinc.com
+host: localhost:9999
+basePath: /
+tags:
+  - name: product-rest
+    description: Product Rest
+paths:
+  /products:
+    get:
+      tags:
+        - product-rest
+      summary: list
+      operationId: listUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductDto'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+    post:
+      tags:
+        - product-rest
+      summary: create
+      operationId: createUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: dto
+          description: dto
+          required: true
+          schema:
+            $ref: '#/definitions/ProductDto'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+  /products/search:
+    get:
+      tags:
+        - product-rest
+      summary: search
+      operationId: searchUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: maxPricedb
+          in: query
+          required: false
+          type: number
+          format: double
+        - name: max_price
+          in: query
+          required: false
+          type: string
+        - name: minPricedb
+          in: query
+          required: false
+          type: number
+          format: double
+        - name: min_price
+          in: query
+          required: false
+          type: string
+        - name: q
+          in: query
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductDto'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+  /products/{id}:
+    get:
+      tags:
+        - product-rest
+      summary: findById
+      operationId: findByIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+    put:
+      tags:
+        - product-rest
+      summary: update
+      operationId: updateUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: dto
+          description: dto
+          required: true
+          schema:
+            $ref: '#/definitions/ProductDto'
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+    delete:
+      tags:
+        - product-rest
+      summary: delete
+      operationId: deleteUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '204':
+          description: No Content
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+definitions:
+  ProductDto:
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      price:
+        type: number
+        format: double
+    title: ProductDto
+  ExceptionResponse:
+    type: object
+    properties:
+      status_code: 
+        type: integer
+        format: int64
+      message:
+        type: string
+    title: ExceptionResponse    
