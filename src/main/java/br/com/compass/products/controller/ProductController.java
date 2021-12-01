@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -25,6 +28,12 @@ public class ProductController {
         return ProductDTO.changeToProductDTO(products);
     }
 
+    @GetMapping("/{id}")
+    public ProductDTO showProduct(@PathVariable Long id) {
+        Product product = repository.getById(id);
+        return new ProductDTO(product);
+    }
+
     @PostMapping
     public ResponseEntity<ProductDTO> storeProduct(@RequestBody ProductForm form, UriComponentsBuilder uriBuilder) {
         Product product = form.changeToProduct();
@@ -32,6 +41,12 @@ public class ProductController {
 
         URI uri = uriBuilder.path("/products/{id}").buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProductDTO(product));
+    }
+
+    @PutMapping("/{id}") @Transactional
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product form) {
+        Product product = form.updateProduct(id, repository);
+        return ResponseEntity.ok(new ProductDTO(product));
     }
 
 }
