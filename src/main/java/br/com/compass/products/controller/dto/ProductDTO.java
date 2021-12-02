@@ -2,9 +2,7 @@ package br.com.compass.products.controller.dto;
 
 import br.com.compass.products.model.Product;
 import lombok.Data;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 @Data
 public class ProductDTO {
@@ -21,7 +19,7 @@ public class ProductDTO {
         this.price = product.getPrice();
     }
 
-    public static List<ProductDTO> changeToProductDTO(List<Product> products) {
-        return products.stream().map(ProductDTO::new).collect(Collectors.toList());
+    public static Page<ProductDTO> changeToProductDTO(Page<Product> products) {
+        return products.map(ProductDTO::new);
     }
 }

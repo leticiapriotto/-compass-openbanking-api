@@ -5,13 +5,16 @@ import br.com.compass.products.controller.form.ProductForm;
 import br.com.compass.products.model.Product;
 import br.com.compass.products.respository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,8 +25,8 @@ public class ProductController {
     private ProductRepository repository;
 
     @GetMapping
-    public List<ProductDTO> products() {
-        List<Product> products = repository.findAll();
+    public Page<ProductDTO> products(@PageableDefault(sort = "name", page = 0, size = 5) Pageable pageable) {
+        Page<Product> products = repository.findAll(pageable);
         return ProductDTO.changeToProductDTO(products);
     }
 
@@ -34,7 +37,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> storeProduct(@RequestBody ProductForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ProductDTO> storeProduct(@RequestBody @Valid ProductForm form, UriComponentsBuilder uriBuilder) {
         Product product = form.changeToProduct();
         repository.save(product);
 
@@ -43,7 +46,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}") @Transactional
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductForm form) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductForm form) {
         Product product = form.updateProduct(id, repository);
         return ResponseEntity.ok(new ProductDTO(product));
     }
