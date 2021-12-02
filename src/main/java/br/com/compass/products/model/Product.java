@@ -30,14 +30,4 @@ public class Product {
         this.price = price;
     }
 
-    public Product updateProduct(Long id, ProductRepository repository) {
-        Product product = repository.getById(id);
-
-        product.setName(this.name);
-        product.setDescription(this.description);
-        product.setPrice(this.price);
-
-        return product;
-    }
-
 }

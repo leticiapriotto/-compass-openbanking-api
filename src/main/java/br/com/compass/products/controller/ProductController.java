@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -44,9 +43,20 @@ public class ProductController {
     }
 
     @PutMapping("/{id}") @Transactional
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product form) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductForm form) {
         Product product = form.updateProduct(id, repository);
         return ResponseEntity.ok(new ProductDTO(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+        Optional<Product> optional = repository.findById(id);
+
+        if (optional.isPresent()) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
