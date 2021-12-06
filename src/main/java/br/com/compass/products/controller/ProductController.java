@@ -5,16 +5,14 @@ import br.com.compass.products.controller.form.ProductForm;
 import br.com.compass.products.model.Product;
 import br.com.compass.products.respository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -29,6 +27,16 @@ public class ProductController {
     @GetMapping
     public Page<ProductDTO> products(@PageableDefault(sort = "name", page = 0, size = 5) Pageable pageable) {
         Page<Product> products = repository.findAll(pageable);
+        return ProductDTO.changeToProductDTO(products);
+    }
+
+    @GetMapping("/search")
+    public Page<ProductDTO> productsSearch(@PageableDefault(sort = "price", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable pageable,
+                                           @RequestParam(required = false) Double maxPrice,
+                                           @RequestParam(required = false) Double minPrice,
+                                           @RequestParam(required = false) String q) {
+
+        Page<Product> products = repository.findBySearch(pageable, minPrice, maxPrice, q);
         return ProductDTO.changeToProductDTO(products);
     }
 
