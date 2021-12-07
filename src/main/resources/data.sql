@@ -1,9 +1,6 @@
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Verde', 'Um sapinho verde pequeno', '100.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Vermelho', 'Um sapinho vermelho pequeno', '500.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Azul', 'Um sapinho azul pequeno', '20.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Verde', 'Um sapinho verde pequeno', '250.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Vermelho', 'Um sapinho vermelho pequeno', '35.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Azul', 'Um sapinho azul pequeno', '69.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Verde', 'Um sapinho verde pequeno', '24.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Vermelho', 'Um sapinho vermelho pequeno', '1100.00');
-INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Azul', 'Um sapinho azul pequeno', '400.00');
+INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Verde', 'Um sapinho verde pequeno', '25.00');
+INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Vermelho', 'Um sapinho vermelho pequeno', '30.00');
+INSERT INTO PRODUCT(name, description, price) VALUES('Sapinho Verde', 'Um sapinho verde pequeno', '35.00');
+INSERT INTO PRODUCT(name, description, price) VALUES('Conjunto de sapinhos', 'Pacote com 5 sapinhos de várias cores', '200.00');
+INSERT INTO PRODUCT(name, description, price) VALUES('Cacto Gigante', 'Um cacto muito bonito e enorme', '100.00');
+INSERT INTO PRODUCT(name, description, price) VALUES('Cacto Pequeno', 'Um cacto muito bonito em miniatura', '50.00');
