@@ -2,8 +2,7 @@ package br.com.compass.products.controller;
 
 import br.com.compass.products.controller.dto.ProductDTO;
 import br.com.compass.products.controller.form.ProductForm;
-import br.com.compass.products.model.Product;
-import br.com.compass.products.respository.ProductRepository;
+import br.com.compass.products.service.ProductServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,19 +14,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.net.URI;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductServiceImp service;
 
     @GetMapping
-    public Page<ProductDTO> products(@PageableDefault(sort = "name", page = 0, size = 5) Pageable pageable) {
-        Page<Product> products = repository.findAll(pageable);
-        return ProductDTO.changeToProductDTO(products);
+    public Page<ProductDTO> getAllProducts(@PageableDefault(sort = "name", page = 0, size = 5) Pageable pageable) {
+        return service.getAllProducts(pageable);
     }
 
     @GetMapping("/search")
@@ -36,35 +33,27 @@ public class ProductController {
                                            @RequestParam(required = false) Double minPrice,
                                            @RequestParam(required = false) String q) {
 
-        Page<Product> products = repository.findBySearch(pageable, minPrice, maxPrice, q);
-        return ProductDTO.changeToProductDTO(products);
+        return service.productsSearch(pageable, maxPrice, minPrice, q);
     }
 
     @GetMapping("/{id}")
     public ProductDTO showProduct(@PathVariable Long id) {
-        Product product = repository.getById(id);
-        return new ProductDTO(product);
+        return service.showProduct(id);
     }
 
     @PostMapping
     public ResponseEntity<ProductDTO> storeProduct(@RequestBody @Valid ProductForm form, UriComponentsBuilder uriBuilder) {
-        Product product = form.changeToProduct();
-        repository.save(product);
-
-        URI uri = uriBuilder.path("/products/{id}").buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(uri).body(new ProductDTO(product));
+        return service.storeProduct(form, uriBuilder);
     }
 
     @PutMapping("/{id}") @Transactional
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductForm form) {
-        Product product = form.updateProduct(id, repository);
-        return ResponseEntity.ok(new ProductDTO(product));
+       return service.updateProduct(id, form);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        repository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return service.deleteProduct(id);
     }
 
 }
