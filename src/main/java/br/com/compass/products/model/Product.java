@@ -1,5 +1,6 @@
 package br.com.compass.products.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-@Data
+
 @Entity
-@NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 public class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,11 +18,5 @@ public class Product {
     private String name;
     private String description;
     private Double price;
-
-    public Product(String name, String description, Double price) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
 
 }

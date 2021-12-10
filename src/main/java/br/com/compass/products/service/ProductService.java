@@ -13,7 +13,7 @@ public interface ProductService {
 
     Page<ProductDTO> productsSearch(Pageable pageable, Double maxPrice, Double minPrice, String q);
 
-    ProductDTO showProduct(Long id);
+    ResponseEntity<ProductDTO> getProductById(Long id);
 
     ResponseEntity<ProductDTO> storeProduct(ProductForm form, UriComponentsBuilder uriBuilder);
 

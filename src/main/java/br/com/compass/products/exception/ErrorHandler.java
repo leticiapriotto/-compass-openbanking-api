@@ -53,10 +53,6 @@ public class ErrorHandler {
         return new ExceptionResponse( HttpStatus.BAD_REQUEST.value(), "Page Unavailable");
     }
 
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR )
-    @ExceptionHandler(Exception.class)
-    public ExceptionResponse allException(Exception exception) {
-        return new ExceptionResponse( HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Error");
-    }
+
 
 }
